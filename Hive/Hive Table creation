@@ -1,0 +1,52 @@
+CREATE EXTERNAL TABLE populationtable(
+        code STRING, 
+        Country STRING,
+        year BIGINT,
+        midpop BIGINT)
+    COMMENT 'Data about population on basis of 5 year age group'
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ','
+    STORED AS TEXTFILE
+    LOCATION 's3://bucket1023114/input/';
+
+CREATE TABLE lifeTable(
+	index des
+        Country STRING,
+        year INT,
+        inf_mort FLOAT,
+	inf_mort_male FLOAT,
+	inf_mort_female FLOAT,
+	life_expectancy FLOAT,
+	life_expectancy_male FLOAT,
+	life_expectancy_female FLOAT,
+	mortality_rate_under5 FLOAT,
+	mortality_rate_under5_male FLOAT,
+	mortality_rate_under5_female FLOAT,
+	mortality_rate_1to4 FLOAT,
+	mortality_rate_1to4_male FLOAT,
+	mortality_rate_1to4_female FLOAT)
+    COMMENT 'Data about life expectancy and infant rates'
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ','
+    STORED AS TEXTFILE;
+
+
+CREATE TABLE maintable(
+        code STRING, 
+        Country STRING,
+        year INT,
+	sex STRING,
+	max_age INT,
+	age1 INT,age2 INT, age3 INT, age4 INT,age5 INT,age6 INT,age7 INT, age8 INT, age9 INT,age10 INT,age11 INT,age12 INT, age13 INT, age14 INT,age15 INT,age16 INT,age17 INT, age18 INT, age19 INT,age20 INT,
+	age21 INT,age22 INT, age23 INT, age24 INT,age25 INT,age26 INT,age27 INT, age28 INT, age29 INT,age30 INT,age31 INT,age32 INT, age33 INT, age34 INT,age35 INT,age36 INT,age37 INT, age38 INT, age39 INT,age40 INT,
+	age41 INT,age42 INT, age43 INT, age44 INT,age45 INT,age46 INT,age47 INT, age48 INT, age49 INT,age50 INT,age51 INT,age52 INT, age53 INT, age54 INT,age55 INT,age56 INT,age57 INT, age58 INT, age59 INT,age60 INT,
+	age61 INT,age62 INT, age63 INT, age64 INT,age65 INT,age66 INT,age67 INT, age68 INT, age69 INT,age70 INT,age71 INT,age72 INT, age73 INT, age74 INT,age75 INT,age76 INT,age77 INT, age78 INT, age79 INT,age80 INT,
+	age81 INT,age82 INT, age83 INT, age84 INT,age85 INT,age86 INT,age87 INT, age88 INT, age89 INT,age90 INT,age91 INT,age92 INT, age93 INT, age94 INT,age95 INT,age96 INT,age97 INT, age98 INT, age99 INT,age100 INT,
+	age INT,
+	permut_role STRING,
+	tot_pop INT
+	)
+    COMMENT 'Data about population year wise'
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ','
+    STORED AS TEXTFILE;
