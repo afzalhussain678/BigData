@@ -1,0 +1,91 @@
+package solution;
+
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.Job;
+
+public class AverageRate 
+{
+	
+	public static void main(String[] args) throws Exception 
+	{
+		if (args.length != 2) {
+    		  System.out.printf(
+    		      "Usage: AverageRate <input dir> <output dir>\n");
+    		  System.exit(-1);
+    		}
+		Job job new Job();
+		job.setJarByClass(AverageRate.class);
+		job.setJobName("Average Rate");
+		FileInputFormat.setInputPaths(job, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+		job.setMapperClass(AverageMapper.class);
+		job.setReducerClass(AverageReducer.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(FloatWritable.class);
+		boolean success = job.waitForCompletion(true);
+    		System.exit(success ? 0 : 1);
+	}
+
+
+}		
+
+
+package solution;
+
+import java.io.IOException;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+public class AverageMapper extends Mapper<LongWritable, Text, Text, FloatWritable>
+{
+	public void map(LongWritable key, Text countryRecord, Context con)
+		throws IOException, InterruptedException {
+
+		String[] word = countryRecord.toString().split(",",-1);
+ 		 String country = word[1];
+ 		 try {
+ 		  Float mortRate = Float.parseFloat(word[3]);
+ 		  con.write(new Text(country), new FloatWritable(mortRate));
+			  } catch (Exception e) {
+			   e.printStackTrace();
+		  }
+	 }
+}
+
+
+package solution;
+
+import java.io.IOException;
+
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+public class AverageReducer extends Reducer<Text, FloatWritable, Text, Text> {
+ public void reduce(Text key, Iterable<FloatWritable> valueList,
+   Context con) throws IOException, InterruptedException {
+  try {
+   Float total = (float) 0;
+   int count = 0;
+   for (FloatWritable var : valueList) {
+    total += var.get();
+    System.out.println("reducer " + var.get());
+    count++;
+   }
+   Float avg = (Float) total / count;
+   String out = "Total: " + total + " :: " + "Average: " + avg;
+   con.write(key, new Text(out));
+  } catch (Exception e) {
+   e.printStackTrace();
+  }
+ }
+}
+	
+
