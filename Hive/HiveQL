@@ -1,0 +1,7 @@
+
+
+select distinct (age21+age22+age23+age24+age25+age26+age27+age28+age29+age30)/10 as youth, year, country,sex from maintable where year>2016 and year<2019 sort by country asc;
+
+select  m.country, m.age70,m.year,l.life_expectancy from maintable m join lifeexpectancytable l on (m.country = l.country) where m.year="2017" sort by country asc limit 100;
+
+select distinct country, life_expectancy, year from lifeexpectancytable where year = "2017" limit 300; 
