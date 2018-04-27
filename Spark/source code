@@ -1,0 +1,36 @@
+//DataFrame name = schemaLife
+
+from pyspark.sql import SQLContext
+from pyspark.sql.types import *
+sqlContext = SQLContext(sc)
+
+life_rdd1 = sc.textFile("/mortality_life_expectancy.csv")
+
+life_rdd2 = life_rdd1.map(lambda l: l.split(","))
+
+schemaString = "country_c country_n year infant_mor infant_mor_m infant_mor_f life_exp life_exp_m life_exp_f mor_rate_u5 mor_rate_u5_m mor_rate_u5_f mor_rate_1to4 mor_rate_1to4_m mor_rate_1to4_f
+
+fields = [StructField(field_name, StringType(), True) for field_name in schemaString.split()]
+
+schema = StructType(fields)
+
+schemaLife = sqlContext.createDataFrame(life_rdd2, schema)
+
+schemaLife.groupBy("year").count().show()
+
+schemaLife.filter(schemaLife.life_exp >= '70' and schemaLife.country_c =='IN').show()
+
+
+schemaLife.registerTempTable("Life")
+
+sqlContext.sql("select distinct country_n, year, life_exp  from Life  where year = '2017' order by life_exp desc limit 10").show()
+
+
+
+
+
+
+
+
+
+
