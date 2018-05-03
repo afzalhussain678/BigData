@@ -1,0 +1,5 @@
+
+
+
+select  m.code,m.year, m.mid_pop, e.life_expec from [worldstatistics.midPopulation] m join 
+[worldstatistics.expectancytable] e on m.code = e.country where m.country ="IN" 
